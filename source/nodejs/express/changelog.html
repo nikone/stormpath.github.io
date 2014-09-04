@@ -105,6 +105,9 @@
 </ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="">Change Log</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-3-0">Version 0.3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-2-9">Version 0.2.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#version-0-2-8">Version 0.2.8</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#version-0-2-7">Version 0.2.7</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#version-0-2-6">Version 0.2.6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#version-0-2-5">Version 0.2.5</a></li>
@@ -125,6 +128,9 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="upgrading.html">Upgrade Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-9-version-0-3-0">Version 0.2.9 -&gt; Version 0.3.0</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-8-version-0-2-9">Version 0.2.8 -&gt; Version 0.2.9</a></li>
+<li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-7-version-0-2-8">Version 0.2.7 -&gt; Version 0.2.8</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-6-version-0-2-7">Version 0.2.6 -&gt; Version 0.2.7</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-5-version-0-2-6">Version 0.2.5 -&gt; Version 0.2.6</a></li>
 <li class="toctree-l2"><a class="reference internal" href="upgrading.html#version-0-2-4-version-0-2-5">Version 0.2.4 -&gt; Version 0.2.5</a></li>
@@ -181,6 +187,34 @@
   <div class="section" id="change-log">
 <span id="changelog"></span><h1>Change Log<a class="headerlink" href="#change-log" title="Permalink to this headline">¶</a></h1>
 <p>All library changes, in descending order.</p>
+<div class="section" id="version-0-3-0">
+<h2>Version 0.3.0<a class="headerlink" href="#version-0-3-0" title="Permalink to this headline">¶</a></h2>
+<p><strong>Released on September 4, 2014.</strong></p>
+<ul class="simple">
+<li>Adding in a simpler way to access users: <tt class="docutils literal"><span class="pre">req.user</span></tt>.</li>
+</ul>
+</div>
+<div class="section" id="version-0-2-9">
+<h2>Version 0.2.9<a class="headerlink" href="#version-0-2-9" title="Permalink to this headline">¶</a></h2>
+<p><strong>Released on September 3, 2014.</strong></p>
+<ul class="simple">
+<li>Fixing style issue for default authentication pages in IE.</li>
+<li>Fixing the rendering issue with form errors &#8211; they were previously not
+displayed in a human-readable way.</li>
+<li>Improving <tt class="docutils literal"><span class="pre">enableAutoLogin</span></tt> behavior: it now successfully redirects to the
+URL specified by the <tt class="docutils literal"><span class="pre">next</span></tt> querystring (<em>if it exists</em>).</li>
+<li>Fixing issue with session max duration.  Adding in workaround to get around
+the mozilla bug.</li>
+</ul>
+</div>
+<div class="section" id="version-0-2-8">
+<h2>Version 0.2.8<a class="headerlink" href="#version-0-2-8" title="Permalink to this headline">¶</a></h2>
+<p><strong>Released on August 29, 2014.</strong></p>
+<ul class="simple">
+<li>Adding a <tt class="docutils literal"><span class="pre">postRegistrationHandler</span></tt>.  This new functionality allows users to
+perform actions after a user has registered.</li>
+</ul>
+</div>
 <div class="section" id="version-0-2-7">
 <h2>Version 0.2.7<a class="headerlink" href="#version-0-2-7" title="Permalink to this headline">¶</a></h2>
 <p><strong>Released on August 28, 2014.</strong></p>
