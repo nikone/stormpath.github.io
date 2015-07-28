@@ -1167,6 +1167,7 @@ Applications additionally support the following account-specific functionality:
 * [Register A New Account](#application-account-register)
     * and optionally specify your own [account-specific custom data](#application-account-register-with-customData)
 * [Verify An Account's Email Address](#application-verify-email)
+* [Verify the Account (Consume The Token)](#account-consume-token)
 * [Log In (Authenticate) an Account](#application-account-authc)
 * [Reset An Account's Password](#application-password-reset)
 * [List an Application's Accounts](#application-accounts-list)
@@ -3169,6 +3170,7 @@ For example, if you were to request the account object for a user who has not ye
 As an end-developer, all you need to do to create email verification tokens when a new account is created is to [configure the workflow](#accounts-verification-configuration) for the appropriate directory.
 {% enddocs %}
 
+<a class="anchor" name="account-consume-token"></a>
 #### Verifying The Account (Consume The Token)
 
 When a new account is registered after configuration, either programmatically or through an account creation form in your application, an email verification token is created and Stormpath then automatically sends an email to the user. This email will include a link to the base URL you've [configured](#accounts-verification-configuration) with the following query string parameter:
@@ -3181,11 +3183,13 @@ The token you capture from the query string is used to form the full `href` for 
 
     /v1/accounts/emailVerificationsToken/:verificationToken
 
-To verify the account, you use the token from the query string to form the above URL and call the `verifyEmailToken` on the Client class, or on the Client tenant instance:
+To verify the account, you use the token from the query string to form the above URL and call the `verifyEmailToken` on the Client class, on the Client tenant instance or on the application resource:
 
 **Example Request**
 
     Account account = tenant.verifyAccountEmail(verificationToken);
+
+
 
 If the validation succeeds, you will receive back the `account` resource which has now been verified. An email confirming the verification will be automatically sent to the account's email address by Stormpath afterwards, and the account will then be able to authenticate successfully.
 
