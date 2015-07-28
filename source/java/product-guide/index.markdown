@@ -3189,8 +3189,6 @@ To verify the account, you use the token from the query string to form the above
 
     Account account = tenant.verifyAccountEmail(verificationToken);
 
-
-
 If the validation succeeds, you will receive back the `account` resource which has now been verified. An email confirming the verification will be automatically sent to the account's email address by Stormpath afterwards, and the account will then be able to authenticate successfully.
 
 If the verification token is not found, a `404 Not Found` is returned with an [error payload](#error-handling) explaining why the attempt failed:
