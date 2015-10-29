@@ -537,7 +537,7 @@
 
 <p>To get these values, you can query the <code>OAuth Policy</code> for an Application:</p>
 
-<div class="tabs"><ul><li><a href="#tabs-get-oauth-policy-curl">curl</a></li><li><a href="#tabs-get-oauth-policy-node">node</a></li></ul><div id="tabs-get-oauth-policy-curl"><pre lang="curl"><code>
+<div class="tabs"><ul><li><a href="#tabs-get-oauth-policy-curl">curl</a></li><li><a href="#tabs-get-oauth-policy-node">node</a></li><li><a href="#tabs-get-oauth-policy-php">php</a></li></ul><div id="tabs-get-oauth-policy-curl"><pre lang="curl"><code>
 curl -X GET \
      -u $API_KEY_ID:$API_KEY_SECRET \
      -H "Accept: application/json" \
@@ -545,9 +545,14 @@ curl -X GET \
      "https://api.stormpath.com/v1/oAuthPolicies/5r0klomitodnOCuvESIP5z"
 
 </code> </pre> </div><div id="tabs-get-oauth-policy-node"><pre lang="node"><code>
-application.getOAuthPolicy(function(err, policy) {
-  console.log('policy:', policy);
-});
+	application.getOAuthPolicy(function(err, policy) {
+	console.log('policy:', policy);
+	});
+</code> </pre> </div><div id="tabs-get-oauth-policy-php"><pre lang="php"><code>
+	$oauthPolicy = $application->oauthPolicy;
+	$accessTokenTtl = $oauthPolicy->accessTokenTtl;
+	$refreshTokenTtl = $oauthPolicy->refreshTokenTtl;
+	$tokenEndpoint = $oauthPolicy->tokenEndpoint;
 </code> </pre> </div></div>
 
 
@@ -565,7 +570,7 @@ application.getOAuthPolicy(function(err, policy) {
 
 <p>To update the <code>Access Token</code> and <code>Refresh Token</code> TTL, making a <code>POST</code> request to the application&rsquo;s oAuthPolicy with the updated values.  The valid valueFor example, if your application needs to have an shorter lived access and refresh token:</p>
 
-<div class="tabs"><ul><li><a href="#tabs-set-oauth-policy-curl">curl</a></li><li><a href="#tabs-set-oauth-policy-node">node</a></li></ul><div id="tabs-set-oauth-policy-curl"><pre lang="curl"><code>
+<div class="tabs"><ul><li><a href="#tabs-set-oauth-policy-curl">curl</a></li><li><a href="#tabs-set-oauth-policy-node">node</a></li><li><a href="#tabs-set-oauth-policy-php">php</a></li></ul><div id="tabs-set-oauth-policy-curl"><pre lang="curl"><code>
 curl -X GET \
      -u $API_KEY_ID:$API_KEY_SECRET \
      -H "Accept: application/json" \
@@ -577,12 +582,17 @@ curl -X GET \
      "https://api.stormpath.com/v1/oAuthPolicies/5r0klomitodnOCuvESIP5z"
 
 </code> </pre> </div><div id="tabs-set-oauth-policy-node"><pre lang="node"><code>
-application.getOAuthPolicy(function(err, policy) {
-  policy.accessTokenTtl = 'PT30M';
-  policy.refreshTokenTtl = 'P7D';
-  policy.save(function(err, updatedPolicy) {
-    console.log(updatedPolicy);
-  });
+	application.getOAuthPolicy(function(err, policy) {
+	policy.accessTokenTtl = 'PT30M';
+	policy.refreshTokenTtl = 'P7D';
+	policy.save(function(err, updatedPolicy) {
+	console.log(updatedPolicy);
+	});
+</code> </pre> </div><div id="tabs-set-oauth-policy-php"><pre lang="php"><code>
+	$oauthPolicy = $application->oauthPolicy;
+	$oauthPolicy->accessTokenTtl = 'PT1H';
+	$oauthPolicy->refreshTokenTtl = 'P7D';
+	$oauthPolicy->save();
 </code> </pre> </div></div>
 
 
@@ -626,22 +636,27 @@ application.getOAuthPolicy(function(err, policy) {
 
 <p>Request:</p>
 
-<div class="tabs"><ul><li><a href="#tabs-get-access-token-curl">curl</a></li><li><a href="#tabs-get-access-token-node">node</a></li></ul><div id="tabs-get-access-token-curl"><pre lang="curl"><code>
+<div class="tabs"><ul><li><a href="#tabs-get-access-token-curl">curl</a></li><li><a href="#tabs-get-access-token-node">node</a></li><li><a href="#tabs-get-access-token-php">php</a></li></ul><div id="tabs-get-access-token-curl"><pre lang="curl"><code>
 curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
     -H "Content-Type: application/x-www-form-urlencoded" \
     -d "grant_type=password&username=tom@stormpath.com&password=Secret1"
     https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/oauth/token
 </code> </pre> </div><div id="tabs-get-access-token-node"><pre lang="node"><code>
-var authenticator = new stormpath.OAuthAuthenticator(application);
-  authenticator.authenticate({
-    body: {
-      grant_type: 'password',
-      username: 'user@someemaildomain.com',
-      password: '0wootIFY0!'
-    }
-  }, function(err, result){
-    console.log(result.accessTokenResponse);
-  });
+	var authenticator = new stormpath.OAuthAuthenticator(application);
+	authenticator.authenticate({
+	body: {
+	grant_type: 'password',
+	username: 'user@someemaildomain.com',
+	password: '0wootIFY0!'
+	}
+	}, function(err, result){
+	console.log(result.accessTokenResponse);
+	});
+</code> </pre> </div><div id="tabs-get-access-token-php"><pre lang="php"><code>
+	$passwordGrant = new \Stormpath\Oauth\PasswordGrantRequest('brian@stormpath.com', 'Sup3rS3cr3t!');
+
+	$auth = new \Stormpath\Oauth\PasswordGrantAuthenticator($application);
+	$result = $auth->authenticate($passwordGrant);
 </code> </pre> </div></div>
 
 
@@ -772,18 +787,25 @@ Authorization: Bearer 2YotnFZFEjr1zCsicMWpAA.adf4661fe6715ed477ZiTtPFMD0DyL6KhEg
 
 <p>Request:</p>
 
-<div class="tabs"><ul><li><a href="#tabs-validate-token-curl">curl</a></li><li><a href="#tabs-validate-token-node">node</a></li></ul><div id="tabs-validate-token-curl"><pre lang="curl"><code>
+<div class="tabs"><ul><li><a href="#tabs-validate-token-curl">curl</a></li><li><a href="#tabs-validate-token-node">node</a></li><li><a href="#tabs-validate-token-php">php</a></li></ul><div id="tabs-validate-token-curl"><pre lang="curl"><code>
 curl -X GET --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \    
     https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/authTokens/2YotnFZFEjr1zCsicMWpAA.adf4661fe6715ed477ZiTtPFMD0DyL6KhEg5RGg954193e68b63036.7ZiTtPFMD0DyL6KhEg5RGg
 </code> </pre> </div><div id="tabs-validate-token-node"><pre lang="node"><code>
-var authenticator = new stormpath.OAuthAuthenticator(application);
-authenticator.authenticate({
-  headers: { authorization: 'Bearer: ' + token }
-}, function(err, result) {
-  result.getAccount(function(err, account) {
-    console.log(account);
-  });
-});
+	var authenticator = new stormpath.OAuthAuthenticator(application);
+	authenticator.authenticate({
+	  headers: { authorization: 'Bearer: ' + token }
+	}, function(err, result) {
+	  result.getAccount(function(err, account) {
+	    console.log(account);
+	  });
+	});
+</code> </pre> </div><div id="tabs-validate-token-php"><pre lang="php"><code>
+	$result = (new \Stormpath\Oauth\VerifyAccessToken($application))->verify($jwt);
+
+	// To have the method pull the authorization header or cookie named access_token
+	// Just leave the $jwt out of the verify method. If that is empty when called
+	// The method will automatically try to get the jwt.
+	$result = (new \Stormpath\Oauth\VerifyAccessToken($application))->verify();
 </code> </pre> </div></div>
 
 
@@ -851,9 +873,11 @@ Location: https://api.stormpath.com/v1/accessTokens/jr1zCsicMWpA661fe6715ed477Zi
 
 <p>Request:</p>
 
-<div class="tabs"><ul><li><a href="#tabs-get-access-token-curl">curl</a></li></ul><div id="tabs-get-access-token-curl"><pre lang="curl"><code>
-curl -X GET --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
-    https://api.stormpath.com/v1/accessTokens/74Zd80iW0cOhotjXH4GqM7
+<div class="tabs"><ul><li><a href="#tabs-get-access-token-curl">curl</a></li><li><a href="#tabs-get-access-token-php">php</a></li></ul><div id="tabs-get-access-token-curl"><pre lang="curl"><code>
+	curl -X GET --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
+	https://api.stormpath.com/v1/accessTokens/74Zd80iW0cOhotjXH4GqM7
+</code> </pre> </div><div id="tabs-get-access-token-php"><pre lang="php"><code>
+	$accessToken = \Stormpath\Resource\AccessToken::get('74Zd80iW0cOhotjXH4GqM7');
 </code> </pre> </div></div>
 
 
@@ -913,7 +937,7 @@ Authorization: Bearer 2YotnFZFEjr1zCsicMWpAA.adf4661fe6715ed477ZiTtPFMD0DyL6KhEg
 
 <p>To use a JWT library to validate the token:</p>
 
-<div class="tabs"><ul><li><a href="#tabs-get-access-token-java">java</a></li><li><a href="#tabs-get-access-token-node">node</a></li><li><a href="#tabs-get-access-token-python">python</a></li></ul><div id="tabs-get-access-token-java"><pre lang="java"><code>
+<div class="tabs"><ul><li><a href="#tabs-get-access-token-java">java</a></li><li><a href="#tabs-get-access-token-node">node</a></li><li><a href="#tabs-get-access-token-php">php</a></li><li><a href="#tabs-get-access-token-python">python</a></li></ul><div id="tabs-get-access-token-java"><pre lang="java"><code>
 /* This sample uses JJWT a Java JWT Library (https://github.com/jwtk/jjwt) */
 
 import io.jsonwebtoken.Jwts;
@@ -947,6 +971,13 @@ nJwt.verify(bearerToken, "$STORMPATH_API_KEY_SECRET", function(err, verifiedJwt)
     }
 });    
 
+</code> </pre> </div><div id="tabs-get-access-token-php"><pre lang="php"><code>
+	$result = (new \Stormpath\Oauth\VerifyAccessToken($application))->withLocalValidation->verify($jwt);
+
+	// To have the method pull the authorization header or cookie named access_token
+	// Just leave the $jwt out of the verify method. If that is empty when called
+	// The method will automatically try to get the jwt.
+	$result = (new \Stormpath\Oauth\VerifyAccessToken($application))->withLocalValidation->verify();
 </code> </pre> </div><div id="tabs-get-access-token-python"><pre lang="python"><code>
     /* This sample uses PyJWT a Python JWT Library (https://github.com/jpadilla/pyjwt) */
 </code> </pre> </div></div>
@@ -964,21 +995,26 @@ nJwt.verify(bearerToken, "$STORMPATH_API_KEY_SECRET", function(err, verifiedJwt)
 
 <p>Once your application has a <code>Refresh Token</code>, you can pass the token to your Stormpath Application&rsquo;s <code>tokenEndpoint</code> using the <code>refresh_token</code> OAuth 2.0 grant type.</p>
 
-<div class="tabs"><ul><li><a href="#tabs-refresh-access-token-curl">curl</a></li><li><a href="#tabs-refresh-access-token-node">node</a></li></ul><div id="tabs-refresh-access-token-curl"><pre lang="curl"><code>
+<div class="tabs"><ul><li><a href="#tabs-refresh-access-token-curl">curl</a></li><li><a href="#tabs-refresh-access-token-node">node</a></li><li><a href="#tabs-refresh-access-token-php">php</a></li></ul><div id="tabs-refresh-access-token-curl"><pre lang="curl"><code>
 curl -X POST --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
     -H "Content-Type: application/x-www-form-urlencoded" \
     -d "grant_type=refresh_token&refresh_token=$REFRESH_TOKEN"
     https://api.stormpath.com/v1/applications/$YOUR_APPLICATION_ID/oauth/token
 </code> </pre> </div><div id="tabs-refresh-access-token-node"><pre lang="node"><code>
-var authenticator = new stormpath.OAuthAuthenticator(application);
-authenticator.authenticate({
-  body: {
-    grant_type: 'refresh_token',
-    refresh_token: 'YOUR_REFRESH_TOKEN_JWT'
-  }
-}, function(err, result) {
-  console.log(result.accessTokenResponse);
-});
+	var authenticator = new stormpath.OAuthAuthenticator(application);
+	authenticator.authenticate({
+	  body: {
+	    grant_type: 'refresh_token',
+	    refresh_token: 'YOUR_REFRESH_TOKEN_JWT'
+	  }
+	}, function(err, result) {
+	  console.log(result.accessTokenResponse);
+	});
+</code> </pre> </div><div id="tabs-refresh-access-token-php"><pre lang="php"><code>
+	$refreshGrant = new \Stormpath\Oauth\RefreshGrantRequest($_REQUEST['refresh_token']);
+
+	$auth = new \Stormpath\Oauth\RefreshGrantAuthenticator($application);
+	$result = $auth->authenticate($refreshGrant);
 </code> </pre> </div></div>
 
 
@@ -1115,11 +1151,14 @@ curl -X GET --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
 
 <p>For example:</p>
 
-<div class="tabs"><ul><li><a href="#tabs-refresh-access-token-curl">curl</a></li><li><a href="#tabs-refresh-access-token-node">node</a></li></ul><div id="tabs-refresh-access-token-curl"><pre lang="curl"><code>
+<div class="tabs"><ul><li><a href="#tabs-refresh-access-token-curl">curl</a></li><li><a href="#tabs-refresh-access-token-node">node</a></li><li><a href="#tabs-refresh-access-token-php">php</a></li></ul><div id="tabs-refresh-access-token-curl"><pre lang="curl"><code>
 curl -X DELETE --user $YOUR_API_KEY_ID:$YOUR_API_KEY_SECRET \
     https://api.stormpath.com/v1/accessTokens/74Zd80iW0cOhotjXH4GqM7
 </code> </pre> </div><div id="tabs-refresh-access-token-node"><pre lang="node"><code>
-token.delete(function(err) { console.log('deleted token'); });
+	token.delete(function(err) { console.log('deleted token'); });
+</code> </pre> </div><div id="tabs-refresh-access-token-php"><pre lang="php"><code>
+	$token = AccessToken::get($tokenHref);
+	$token->delete();
 </code> </pre> </div></div>
 
 
