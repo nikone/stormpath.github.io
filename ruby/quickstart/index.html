@@ -582,8 +582,7 @@ Stormpath Application &ldquo;Lightsabers Galore&rdquo; as well.  By default, you
 
 <p>You can retrieve your example <code>Application</code> using the client you created in the previous step:</p>
 
-<pre><code>applications = client.applications.search name: 'My Application'
-application = applications.each.next
+<pre><code>application = client.applications.search name:('My Application').first
 </code></pre>
 
 <p>The code above will retrieve your example <code>Application</code>, which we can use later to do stuff like:</p>
